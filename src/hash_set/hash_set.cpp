@@ -451,3 +451,10 @@ typename HashSet<T>::iterator::difference_type HashSet<T>::iterator::operator-(
 }
 
 template class HashSet<int>;
+template class HashSet<std::string>;
+template class HashSet<double>;
+template class HashSet<char>;
+template class HashSet<float>;
+template class HashSet<bool>;
+template class HashSet<long>;
+template class HashSet<short>;

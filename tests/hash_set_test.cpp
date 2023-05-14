@@ -224,3 +224,161 @@ TEST(HashSetSTLTest, StandardAlgorithmTransform) {
   });
   EXPECT_EQ(doubled, std::vector<int>({2, 4, 6, 8, 10}));
 }
+
+TEST(HashSetTypeTest, IntTest) {
+  HashSet<int> set;
+
+  EXPECT_TRUE(set.empty());
+
+  set.insert(1);
+  set.insert(2);
+  set.insert(3);
+
+  EXPECT_FALSE(set.empty());
+  EXPECT_EQ(3, set.size());
+
+  set.erase(2);
+
+  EXPECT_EQ(2, set.size());
+  EXPECT_TRUE(set.contains(1));
+  EXPECT_FALSE(set.contains(2));
+  EXPECT_TRUE(set.contains(3));
+}
+
+TEST(HashSetTypeTest, DoubleTest) {
+  HashSet<double> set;
+
+  EXPECT_TRUE(set.empty());
+
+  set.insert(1.1);
+  set.insert(2.2);
+  set.insert(3.3);
+
+  EXPECT_FALSE(set.empty());
+  EXPECT_EQ(3, set.size());
+
+  set.erase(2.2);
+
+  EXPECT_EQ(2, set.size());
+  EXPECT_TRUE(set.contains(1.1));
+  EXPECT_FALSE(set.contains(2.2));
+  EXPECT_TRUE(set.contains(3.3));
+}
+
+TEST(HashSetTypeTest, StringTest) {
+  HashSet<std::string> set;
+
+  EXPECT_TRUE(set.empty());
+
+  set.insert("hello");
+  set.insert("world");
+  set.insert("!");
+
+  EXPECT_FALSE(set.empty());
+  EXPECT_EQ(3, set.size());
+
+  set.erase("world");
+
+  EXPECT_EQ(2, set.size());
+  EXPECT_TRUE(set.contains("hello"));
+  EXPECT_FALSE(set.contains("world"));
+  EXPECT_TRUE(set.contains("!"));
+}
+
+TEST(HashSetTypeTest, CharTest) {
+  HashSet<char> set;
+
+  EXPECT_TRUE(set.empty());
+
+  set.insert('c');
+  set.insert('a');
+  set.insert('1');
+
+  EXPECT_FALSE(set.empty());
+  EXPECT_EQ(3, set.size());
+
+  set.erase('a');
+
+  EXPECT_EQ(2, set.size());
+  EXPECT_TRUE(set.contains('c'));
+  EXPECT_FALSE(set.contains('a'));
+  EXPECT_TRUE(set.contains('1'));
+}
+
+TEST(HashSetTypeTest, BoolTest) {
+  HashSet<char> set;
+
+  EXPECT_TRUE(set.empty());
+
+  set.insert(true);
+  set.insert(false);
+
+  EXPECT_FALSE(set.empty());
+  EXPECT_EQ(2, set.size());
+
+  set.erase(false);
+
+  EXPECT_EQ(1, set.size());
+  EXPECT_TRUE(set.contains(true));
+  EXPECT_FALSE(set.contains(false));
+}
+
+TEST(HashSetTypeTest, FloatTest) {
+  HashSet<float> set;
+
+  EXPECT_TRUE(set.empty());
+
+  set.insert(1.1);
+  set.insert(2.2);
+  set.insert(3.3);
+
+  EXPECT_FALSE(set.empty());
+  EXPECT_EQ(3, set.size());
+
+  set.erase(2.2);
+
+  EXPECT_EQ(2, set.size());
+  EXPECT_TRUE(set.contains(1.1));
+  EXPECT_FALSE(set.contains(2.2));
+  EXPECT_TRUE(set.contains(3.3));
+}
+
+TEST(HashSetTypeTest, ShortTest) {
+  HashSet<short> set;
+
+  EXPECT_TRUE(set.empty());
+
+  set.insert(1);
+  set.insert(2);
+  set.insert(3);
+
+  EXPECT_FALSE(set.empty());
+  EXPECT_EQ(3, set.size());
+
+  set.erase(2);
+
+  EXPECT_EQ(2, set.size());
+  EXPECT_TRUE(set.contains(1));
+  EXPECT_FALSE(set.contains(2));
+  EXPECT_TRUE(set.contains(3));
+}
+
+TEST(HashSetTypeTest, LongTest) {
+  HashSet<long> set;
+
+  EXPECT_TRUE(set.empty());
+
+  set.insert(10979679679);
+  set.insert(28547547457548);
+  set.insert(354845646345321);
+
+  EXPECT_FALSE(set.empty());
+  EXPECT_EQ(3, set.size());
+
+  set.erase(354845646345321);
+
+  EXPECT_EQ(2, set.size());
+  EXPECT_TRUE(set.contains(10979679679));
+  EXPECT_FALSE(set.contains(354845646345321));
+  EXPECT_TRUE(set.contains(28547547457548));
+}
