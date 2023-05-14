@@ -165,6 +165,85 @@ void HashSet<T>::moveFrom(HashSet&& other) noexcept {
 }
 
 template <typename T>
+HashSet<T>& HashSet<T>::operator=(const HashSet& other) {
+  if (this != &other) {
+    clear();
+    if (m_capacity < other.m_size) {
+      delete[] m_data;
+      m_data = new Node*[other.m_capacity]();
+      m_capacity = other.m_capacity;
+    }
+    copyFrom(other);
+  }
+  return *this;
+}
+
+template <typename T>
+HashSet<T>& HashSet<T>::operator=(HashSet&& other) noexcept {
+  if (this != &other) {
+    clear();
+    delete[] m_data;
+    m_data = nullptr;
+    m_capacity = 0;
+    moveFrom(move(other));
+  }
+  return *this;
+}
+
+template <typename T>
+bool HashSet<T>::operator==(const HashSet<T>& other) const {
+  if (m_size != other.m_size) {
+    return false;
+  }
+
+  for (const auto& value : other) {
+    if (!contains(value)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+template <typename T>
+bool HashSet<T>::operator!=(const HashSet<T>& other) const {
+  return !(*this == other);
+}
+
+template <typename T>
+bool HashSet<T>::operator<(const HashSet<T>& other) const {
+  auto it1 = begin();
+  auto it2 = other.begin();
+
+  while (it1 != end() && it2 != other.end()) {
+    if (*it1 < *it2) {
+      return true;
+    } else if (*it2 < *it1) {
+      return false;
+    }
+    ++it1;
+    ++it2;
+  }
+
+  return it1 == end() && it2 != other.end();
+}
+
+template <typename T>
+bool HashSet<T>::operator>(const HashSet<T>& other) const {
+  return other < *this;
+}
+
+template <typename T>
+bool HashSet<T>::operator<=(const HashSet<T>& other) const {
+  return !(other < *this);
+}
+
+template <typename T>
+bool HashSet<T>::operator>=(const HashSet<T>& other) const {
+  return !(*this < other);
+}
+
+template <typename T>
 typename HashSet<T>::iterator HashSet<T>::begin() noexcept {
   size_t index = 0;
   while (index < m_capacity && m_data[index] == nullptr) {
@@ -368,6 +447,12 @@ typename HashSet<T>::iterator HashSet<T>::iterator::operator=(
     m_node = other.m_node;
   }
   return *this;
+}
+
+template <typename T>
+typename HashSet<T>::iterator::difference_type HashSet<T>::iterator::operator-(
+    const iterator& other) const {
+  return m_index - other.m_index;
 }
 
 template class HashSet<int>;

@@ -12,6 +12,15 @@ class HashSet {
   HashSet(std::initializer_list<T> values);
   ~HashSet();
 
+  HashSet& operator=(const HashSet& other);
+  HashSet& operator=(HashSet&& other) noexcept;
+  bool operator==(const HashSet<T>& other) const;
+  bool operator!=(const HashSet<T>& other) const;
+  bool operator<(const HashSet<T>& other) const;
+  bool operator>(const HashSet<T>& other) const;
+  bool operator<=(const HashSet<T>& other) const;
+  bool operator>=(const HashSet<T>& other) const;
+
   void insert(const T& value);
   void clear() noexcept;
   bool contains(const T& value) const;
@@ -74,6 +83,7 @@ class HashSet {
     iterator operator--(int);
     iterator operator+(difference_type n);
     iterator operator-(difference_type n);
+    difference_type operator-(const iterator& other) const;
     iterator operator=(const iterator& other);
     iterator& operator-=(difference_type n);
     iterator& operator+=(difference_type n);
