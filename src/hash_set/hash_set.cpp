@@ -1,6 +1,5 @@
 #include <algorithm>
 #include <hash_set/hash_set.hpp>
-#include <iostream>
 #include <stdexcept>
 
 using namespace std;
