@@ -11,9 +11,7 @@ HashSet<T>::HashSet()
 
 template <typename T>
 HashSet<T>::HashSet(const HashSet& other)
-    : m_data(nullptr),
-      m_capacity(other.m_capacity),
-      m_size(0) {
+    : m_data(nullptr), m_capacity(other.m_capacity), m_size(0) {
   copyFrom(other);
 }
 
@@ -97,6 +95,7 @@ void HashSet<T>::erase(const T& value) {
         m_data[index] = current->next;
       }
       delete current;
+      current = nullptr;
       --m_size;
       return;
     }
@@ -333,19 +332,21 @@ typename HashSet<T>::iterator HashSet<T>::iterator::operator--(int) {
 
 template <typename T>
 void HashSet<T>::iterator::findNextNode() {
-  if (m_node->next != nullptr) {
-    m_node = m_node->next;
-  } else {
-    for (std::size_t i = m_index + 1; i < m_capacity; ++i) {
-      if (m_data[i] != nullptr) {
-        m_node = m_data[i];
-        m_index = i;
-        return;
-      }
+  if (m_node != nullptr) {
+    if (m_node->next != nullptr) {
+      m_node = m_node->next;
+      return;
     }
-    m_node = nullptr;
-    m_index = m_capacity;
   }
+  for (std::size_t i = m_index + 1; i < m_capacity; ++i) {
+    if (m_data[i] != nullptr) {
+      m_node = m_data[i];
+      m_index = i;
+      return;
+    }
+  }
+  m_node = nullptr;
+  m_index = m_capacity;
 }
 
 template <typename T>
@@ -432,7 +433,7 @@ bool HashSet<T>::iterator::operator>=(const iterator& other) const noexcept {
 }
 
 template <typename T>
-typename HashSet<T>::iterator HashSet<T>::iterator::operator=(
+typename HashSet<T>::iterator& HashSet<T>::iterator::operator=(
     const iterator& other) {
   if (this != &other) {
     m_data = other.m_data;

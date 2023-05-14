@@ -13,8 +13,10 @@ int main() {
 
   std::cout << "Size of set is: " << set.size() << std::endl;
 
-  std::cout << "Set contains 3: " << std::boolalpha << set.contains(3) << std::endl;
-  std::cout << "Set contains 6: " << std::boolalpha << set.contains(6) << std::endl;
+  std::cout << "Set contains 3: " << std::boolalpha << set.contains(3)
+            << std::endl;
+  std::cout << "Set contains 6: " << std::boolalpha << set.contains(6)
+            << std::endl;
 
   std::cout << "Elements in set are: ";
   for (const auto& element : set) {
