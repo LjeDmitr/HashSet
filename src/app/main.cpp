@@ -18,7 +18,19 @@ int main() {
   cout << "Set contains 3: " << boolalpha << set.contains(3) << endl;
   cout << "Set contains 6: " << boolalpha << set.contains(6) << endl;
 
+  cout << "Elements in set are: ";
+  for (const auto& element : set) {
+    cout << element << " ";
+  }
+  cout << endl;
+
   set.erase(3);
+
+  cout << "Elements in set after removing 3 are: ";
+  for (auto it = set.begin(); it != set.end(); ++it) {
+    cout << *it << " ";
+  }
+  cout << endl;
 
   set.clear();
   cout << "Size of set after clearing is: " << set.size() << endl;
