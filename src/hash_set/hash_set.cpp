@@ -358,4 +358,16 @@ bool HashSet<T>::iterator::operator>=(const iterator& other) const noexcept {
       m_node >= other.m_node;
 }
 
+template <typename T>
+typename HashSet<T>::iterator HashSet<T>::iterator::operator=(
+    const iterator& other) {
+  if (this != &other) {
+    m_data = other.m_data;
+    m_capacity = other.m_capacity;
+    m_index = other.m_index;
+    m_node = other.m_node;
+  }
+  return *this;
+}
+
 template class HashSet<int>;

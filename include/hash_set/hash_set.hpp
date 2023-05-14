@@ -59,6 +59,12 @@ class HashSet {
 
     iterator() noexcept;
     iterator(Node** data, std::size_t capacity, std::size_t index) noexcept;
+    iterator(const iterator& other)
+        : m_data(other.m_data),
+          m_capacity(other.m_capacity),
+          m_index(other.m_index),
+          m_node(other.m_node) {
+    }
 
     reference operator*() const;
     pointer operator->() const;
@@ -68,6 +74,7 @@ class HashSet {
     iterator operator--(int);
     iterator operator+(difference_type n);
     iterator operator-(difference_type n);
+    iterator operator=(const iterator& other);
     iterator& operator-=(difference_type n);
     iterator& operator+=(difference_type n);
     bool operator==(const iterator& other) const noexcept;
