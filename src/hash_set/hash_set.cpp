@@ -11,7 +11,7 @@ HashSet<T>::HashSet()
 
 template <typename T>
 HashSet<T>::HashSet(const HashSet& other)
-    : m_data(new Node*[DEFAULT_CAPACITY]()),
+    : m_data(nullptr),
       m_capacity(other.m_capacity),
       m_size(0) {
   copyFrom(other);
@@ -165,11 +165,8 @@ template <typename T>
 HashSet<T>& HashSet<T>::operator=(const HashSet& other) {
   if (this != &other) {
     clear();
-    if (m_capacity < other.m_size) {
-      delete[] m_data;
-      m_data = new Node*[other.m_capacity]();
-      m_capacity = other.m_capacity;
-    }
+    delete[] m_data;
+    m_data = nullptr;
     copyFrom(other);
   }
   return *this;
