@@ -19,6 +19,25 @@ else()
   message("clang-tidy found:\n" ${CLANG_TIDY_VERSION})
 endif()
 
+find_program(CLANG_FORMAT_EXE "clang-format-14")
+
+if(CLANG_FORMAT_EXE)
+  message("clang-format-14 found: ${CLANG_FORMAT_EXE}")
+else()
+  message("clang-format-14 not found.")
+endif()
+
+set(FORMATTED_FILES
+    ${PROJECT_SOURCE_DIR}/tests/*.cpp
+    ${PROJECT_SOURCE_DIR}/src/**/*.cpp
+    ${PROJECT_SOURCE_DIR}/include/**/*.hpp
+)
+
+add_custom_target(format
+    COMMAND ${CLANG_FORMAT_EXE} -i -style=file ${FORMATTED_FILES}
+    COMMENT "Formatting source files..."
+)
+
 add_subdirectory(tests)
 add_subdirectory(external)
 add_subdirectory(src)
