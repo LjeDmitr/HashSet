@@ -164,4 +164,198 @@ void HashSet<T>::moveFrom(HashSet&& other) noexcept {
   other.m_size = 0;
 }
 
+template <typename T>
+typename HashSet<T>::iterator HashSet<T>::begin() noexcept {
+  size_t index = 0;
+  while (index < m_capacity && m_data[index] == nullptr) {
+    ++index;
+  }
+  if (index < m_capacity) {
+    return iterator(m_data, m_capacity, index);
+  } else {
+    return end();
+  }
+}
+
+template <typename T>
+typename HashSet<T>::iterator HashSet<T>::begin() const noexcept {
+  size_t index = 0;
+  while (index < m_capacity && m_data[index] == nullptr) {
+    ++index;
+  }
+  if (index < m_capacity) {
+    return iterator(m_data, m_capacity, index);
+  } else {
+    return end();
+  }
+}
+
+template <typename T>
+typename HashSet<T>::iterator HashSet<T>::end() noexcept {
+  return iterator(m_data, m_capacity, m_capacity);
+}
+
+template <typename T>
+typename HashSet<T>::iterator HashSet<T>::end() const noexcept {
+  return iterator(m_data, m_capacity, m_capacity);
+}
+
+template <typename T>
+typename HashSet<T>::iterator::reference HashSet<T>::iterator::operator*()
+    const {
+  return m_node->value;
+}
+
+template <typename T>
+typename HashSet<T>::iterator::pointer HashSet<T>::iterator::operator->()
+    const {
+  return &m_node->value;
+}
+
+template <typename T>
+typename HashSet<T>::iterator& HashSet<T>::iterator::operator++() {
+  findNextNode();
+  return *this;
+}
+
+template <typename T>
+typename HashSet<T>::iterator HashSet<T>::iterator::operator++(int) {
+  iterator temp(std::move(*this));
+  ++(*this);
+  return temp;
+}
+
+template <typename T>
+typename HashSet<T>::iterator& HashSet<T>::iterator::operator--() {
+  if (m_node != nullptr && m_node->next != nullptr) {
+    m_node = m_node->next;
+    while (m_node->next != nullptr) {
+      m_node = m_node->next;
+    }
+  } else {
+    std::size_t i = m_index - 1;
+    while (i < m_capacity && m_data[i] == nullptr) {
+      --i;
+    }
+    if (i != 0 && m_data[i] != nullptr) {
+      m_node = m_data[i];
+      while (m_node->next != nullptr) {
+        m_node = m_node->next;
+      }
+      m_index = i;
+    } else {
+      m_node = nullptr;
+      m_index = m_capacity;
+    }
+  }
+  return *this;
+}
+
+template <typename T>
+typename HashSet<T>::iterator HashSet<T>::iterator::operator--(int) {
+  iterator tmp = *this;
+  --(*this);
+  return tmp;
+}
+
+template <typename T>
+void HashSet<T>::iterator::findNextNode() {
+  if (m_node->next != nullptr) {
+    m_node = m_node->next;
+  } else {
+    for (std::size_t i = m_index + 1; i < m_capacity; ++i) {
+      if (m_data[i] != nullptr) {
+        m_node = m_data[i];
+        m_index = i;
+        return;
+      }
+    }
+    m_node = nullptr;
+    m_index = m_capacity;
+  }
+}
+
+template <typename T>
+HashSet<T>::iterator::iterator() noexcept
+    : m_data(nullptr), m_capacity(0), m_index(0), m_node(nullptr) {
+}
+
+template <typename T>
+HashSet<T>::iterator::iterator(
+    Node** data,
+    std::size_t capacity,
+    std::size_t index) noexcept
+    : m_data(data), m_capacity(capacity), m_index(index), m_node(nullptr) {
+  if (index < capacity) {
+    m_node = m_data[index];
+  }
+}
+
+template <typename T>
+typename HashSet<T>::iterator HashSet<T>::iterator::operator+(
+    difference_type n) {
+  iterator result(*this);
+  result += n;
+  return result;
+}
+
+template <typename T>
+typename HashSet<T>::iterator HashSet<T>::iterator::operator-(
+    difference_type n) {
+  iterator result(*this);
+  result -= n;
+  return result;
+}
+
+template <typename T>
+typename HashSet<T>::iterator& HashSet<T>::iterator::operator-=(
+    difference_type n) {
+  for (difference_type i = 0; i < n; ++i) {
+    --(*this);
+  }
+  return *this;
+}
+
+template <typename T>
+typename HashSet<T>::iterator& HashSet<T>::iterator::operator+=(
+    difference_type n) {
+  for (difference_type i = 0; i < n; ++i) {
+    ++(*this);
+  }
+  return *this;
+}
+
+template <typename T>
+bool HashSet<T>::iterator::operator==(const iterator& other) const noexcept {
+  return m_node == other.m_node;
+}
+
+template <typename T>
+bool HashSet<T>::iterator::operator!=(const iterator& other) const noexcept {
+  return !(*this == other);
+}
+
+template <typename T>
+bool HashSet<T>::iterator::operator<(const iterator& other) const noexcept {
+  return m_data == other.m_data && m_index == other.m_index &&
+      m_node < other.m_node;
+}
+template <typename T>
+bool HashSet<T>::iterator::operator>(const iterator& other) const noexcept {
+  return m_data == other.m_data && m_index == other.m_index &&
+      m_node > other.m_node;
+}
+
+template <typename T>
+bool HashSet<T>::iterator::operator<=(const iterator& other) const noexcept {
+  return m_data == other.m_data && m_index == other.m_index &&
+      m_node <= other.m_node;
+}
+
+template <typename T>
+bool HashSet<T>::iterator::operator>=(const iterator& other) const noexcept {
+  return m_data == other.m_data && m_index == other.m_index &&
+      m_node >= other.m_node;
+}
+
 template class HashSet<int>;

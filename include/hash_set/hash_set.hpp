@@ -4,6 +4,7 @@
 template <typename T>
 class HashSet {
  public:
+  class iterator;
 
   HashSet();
   HashSet(const HashSet& other);
@@ -17,6 +18,11 @@ class HashSet {
   bool empty() const noexcept;
   void erase(const T& value);
   std::size_t size() const noexcept;
+
+  iterator begin() noexcept;
+  iterator begin() const noexcept;
+  iterator end() noexcept;
+  iterator end() const noexcept;
 
  private:
   struct Node {
@@ -40,6 +46,45 @@ class HashSet {
   void copyFrom(const HashSet& other);
   void moveFrom(HashSet&& other) noexcept;
 
+ public:
+  class iterator {
+    friend class HashSet<T>;
+
+   public:
+    using iterator_category = std::random_access_iterator_tag;
+    using difference_type = std::ptrdiff_t;
+    using value_type = T;
+    using pointer = T*;
+    using reference = T&;
+
+    iterator() noexcept;
+    iterator(Node** data, std::size_t capacity, std::size_t index) noexcept;
+
+    reference operator*() const;
+    pointer operator->() const;
+    iterator& operator++();
+    iterator& operator--();
+    iterator operator++(int);
+    iterator operator--(int);
+    iterator operator+(difference_type n);
+    iterator operator-(difference_type n);
+    iterator& operator-=(difference_type n);
+    iterator& operator+=(difference_type n);
+    bool operator==(const iterator& other) const noexcept;
+    bool operator!=(const iterator& other) const noexcept;
+    bool operator<(const iterator& other) const noexcept;
+    bool operator>(const iterator& other) const noexcept;
+    bool operator<=(const iterator& other) const noexcept;
+    bool operator>=(const iterator& other) const noexcept;
+
+   private:
+    Node** m_data;
+    std::size_t m_capacity;
+    std::size_t m_index;
+    Node* m_node;
+
+    void findNextNode();
+  };
 };
 
 #endif
