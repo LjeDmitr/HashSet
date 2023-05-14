@@ -4,8 +4,6 @@
 #include <iterator>
 #include <vector>
 
-using namespace std;
-
 TEST(HashSetTest, InsertTest) {
   HashSet<int> set;
 
@@ -98,7 +96,7 @@ TEST(HashSetTest, MoveConstructorTest) {
   set1.insert(7);
   set1.insert(3);
 
-  HashSet<int> set2(move(set1));
+  HashSet<int> set2(std::move(set1));
 
   EXPECT_TRUE(set2.contains(5));
   EXPECT_TRUE(set2.contains(7));
@@ -196,7 +194,7 @@ TEST(HashSetOperatorTest, OperatorGreaterThanOrEqual) {
 TEST(HashSetSTLTest, StandardAlgorithmFind) {
   HashSet<int> set{1, 2, 3, 4, 5};
 
-  auto it = find(set.begin(), set.end(), 3);
+  auto it = std::find(set.begin(), set.end(), 3);
   EXPECT_NE(it, set.end());
   EXPECT_EQ(*it, 3);
 }
@@ -205,7 +203,7 @@ TEST(HashSetSTLTest, StandardAlgorithmFor_each) {
   HashSet<int> set{1, 2, 3, 4, 5};
 
   int sum = 0;
-  for_each(set.begin(), set.end(), [&sum](int x) { sum += x; });
+  std::for_each(set.begin(), set.end(), [&sum](int x) { sum += x; });
   EXPECT_EQ(sum, 15);
 }
 
@@ -213,16 +211,16 @@ TEST(HashSetSTLTest, StandardAlgorithmCount_if) {
   HashSet<int> set{1, 2, 3, 4, 5};
 
   auto count =
-      count_if(set.begin(), set.end(), [](int x) { return x % 2 == 0; });
+      std::count_if(set.begin(), set.end(), [](int x) { return x % 2 == 0; });
   EXPECT_EQ(count, 2);
 }
 
 TEST(HashSetSTLTest, StandardAlgorithmTransform) {
   HashSet<int> set{1, 2, 3, 4, 5};
 
-  vector<int> doubled;
-  transform(set.begin(), set.end(), back_inserter(doubled), [](int x) {
+  std::vector<int> doubled;
+  std::transform(set.begin(), set.end(), back_inserter(doubled), [](int x) {
     return 2 * x;
   });
-  EXPECT_EQ(doubled, vector<int>({2, 4, 6, 8, 10}));
+  EXPECT_EQ(doubled, std::vector<int>({2, 4, 6, 8, 10}));
 }

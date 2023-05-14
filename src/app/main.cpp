@@ -2,8 +2,6 @@
 #include <hash_set/hash_set.hpp>
 #include <iostream>
 
-using namespace std;
-
 int main() {
   HashSet<int> set;
 
@@ -13,27 +11,27 @@ int main() {
   set.insert(4);
   set.insert(5);
 
-  cout << "Size of set is: " << set.size() << endl;
+  std::cout << "Size of set is: " << set.size() << std::endl;
 
-  cout << "Set contains 3: " << boolalpha << set.contains(3) << endl;
-  cout << "Set contains 6: " << boolalpha << set.contains(6) << endl;
+  std::cout << "Set contains 3: " << std::boolalpha << set.contains(3) << std::endl;
+  std::cout << "Set contains 6: " << std::boolalpha << set.contains(6) << std::endl;
 
-  cout << "Elements in set are: ";
+  std::cout << "Elements in set are: ";
   for (const auto& element : set) {
-    cout << element << " ";
+    std::cout << element << " ";
   }
-  cout << endl;
+  std::cout << std::endl;
 
   set.erase(3);
 
-  cout << "Elements in set after removing 3 are: ";
+  std::cout << "Elements in set after removing 3 are: ";
   for (auto it = set.begin(); it != set.end(); ++it) {
-    cout << *it << " ";
+    std::cout << *it << " ";
   }
-  cout << endl;
+  std::cout << std::endl;
 
   set.clear();
-  cout << "Size of set after clearing is: " << set.size() << endl;
+  std::cout << "Size of set after clearing is: " << set.size() << std::endl;
 
   return 0;
 }

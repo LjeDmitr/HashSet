@@ -2,8 +2,6 @@
 #include <hash_set/hash_set.hpp>
 #include <stdexcept>
 
-using namespace std;
-
 template <typename T>
 HashSet<T>::HashSet()
     : m_data(new Node*[DEFAULT_CAPACITY]()),
@@ -22,7 +20,7 @@ HashSet<T>::HashSet(const HashSet& other)
 template <typename T>
 HashSet<T>::HashSet(HashSet&& other) noexcept
     : m_data(nullptr), m_capacity(0), m_size(0) {
-  moveFrom(move(other));
+  moveFrom(std::move(other));
 }
 
 template <typename T>
@@ -49,7 +47,7 @@ void HashSet<T>::insert(const T& value) {
   if (m_size >= m_capacity * LOAD_FACTOR) {
     rehash();
   }
-  const size_t index = hash<T>{}(value) % m_capacity;
+  const size_t index = std::hash<T>{}(value) % m_capacity;
   m_data[index] = new Node(value, m_data[index]);
   ++m_size;
 }
@@ -70,7 +68,7 @@ void HashSet<T>::clear() noexcept {
 
 template <typename T>
 bool HashSet<T>::contains(const T& value) const {
-  const size_t index = hash<T>{}(value) % m_capacity;
+  const size_t index = std::hash<T>{}(value) % m_capacity;
   Node* current = m_data[index];
   while (current != nullptr) {
     if (current->value == value) {
@@ -88,7 +86,7 @@ bool HashSet<T>::empty() const noexcept {
 
 template <typename T>
 void HashSet<T>::erase(const T& value) {
-  const size_t index = hash<T>{}(value) % m_capacity;
+  const size_t index = std::hash<T>{}(value) % m_capacity;
   Node* current = m_data[index];
   Node* previous = nullptr;
   while (current != nullptr) {
@@ -121,7 +119,7 @@ void HashSet<T>::rehash() {
   for (size_t i = 0; i < m_capacity; ++i) {
     Node* node = m_data[i];
     while (node != nullptr) {
-      size_t new_index = hash<T>{}(node->value) % new_capacity;
+      size_t new_index = std::hash<T>{}(node->value) % new_capacity;
       Node* new_node = new_data[new_index];
       new_data[new_index] = new Node(node->value, new_node);
       ++new_size;
@@ -184,7 +182,7 @@ HashSet<T>& HashSet<T>::operator=(HashSet&& other) noexcept {
     delete[] m_data;
     m_data = nullptr;
     m_capacity = 0;
-    moveFrom(move(other));
+    moveFrom(std::move(other));
   }
   return *this;
 }
