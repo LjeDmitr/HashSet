@@ -1,1 +1,2 @@
-add_subdirectory(time-app)
+add_subdirectory(app)
+add_subdirectory(hash_set)
