@@ -332,6 +332,7 @@ typename HashSet<T>::iterator HashSet<T>::iterator::operator--(int) {
 
 template <typename T>
 void HashSet<T>::iterator::findNextNode() {
+  m_node = m_data[m_index];
   if (m_node != nullptr) {
     if (m_node->next != nullptr) {
       m_node = m_node->next;

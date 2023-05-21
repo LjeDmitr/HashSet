@@ -28,7 +28,11 @@ int main() {
 
   std::cout << "Elements in set after removing 3 are: ";
   for (auto it = set.begin(); it != set.end(); ++it) {
-    std::cout << *it << " ";
+    if (*it == 2) {
+      set.erase(*it);
+    } else {
+      std::cout << *it << " ";
+    }
   }
   std::cout << std::endl;
 
