@@ -299,26 +299,29 @@ typename HashSet<T>::iterator HashSet<T>::iterator::operator++(int) {
 
 template <typename T>
 typename HashSet<T>::iterator& HashSet<T>::iterator::operator--() {
-  if (m_node != nullptr && m_node->next != nullptr) {
-    m_node = m_node->next;
+  if (m_node != nullptr) {
+    Node* tmp = m_node;
+    m_node = m_data[m_index];
+    if (tmp != m_node) {
+      while (m_node->next != tmp) {
+        m_node = m_node->next;
+      }
+      return *this;
+    }
+  }
+  std::size_t i = m_index - 1;
+  while (i < m_capacity && m_data[i] == nullptr) {
+    --i;
+  }
+  if (i != 0 && m_data[i] != nullptr) {
+    m_node = m_data[i];
     while (m_node->next != nullptr) {
       m_node = m_node->next;
     }
+    m_index = i;
   } else {
-    std::size_t i = m_index - 1;
-    while (i < m_capacity && m_data[i] == nullptr) {
-      --i;
-    }
-    if (i != 0 && m_data[i] != nullptr) {
-      m_node = m_data[i];
-      while (m_node->next != nullptr) {
-        m_node = m_node->next;
-      }
-      m_index = i;
-    } else {
-      m_node = nullptr;
-      m_index = m_capacity;
-    }
+    m_node = nullptr;
+    m_index = m_capacity;
   }
   return *this;
 }
