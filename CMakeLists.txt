@@ -38,6 +38,8 @@ add_custom_target(format
     COMMENT "Formatting source files..."
 )
 
+enable_testing()
+
 add_subdirectory(tests)
 add_subdirectory(external)
 add_subdirectory(src)
